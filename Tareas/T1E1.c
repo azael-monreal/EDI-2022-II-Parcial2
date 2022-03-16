@@ -8,7 +8,7 @@
 #include <string.h>
 #define SIZE 100
 
-int PalindromeRecursive(char string[], int size, int i);
+int PalindromeRecursive(char string[], int size, int i, int j);
 int PalindromeCycles(char string[], int size);
 
 
@@ -16,25 +16,39 @@ int main()
 {
 	char in[SIZE];
 	printf("String: ");
-	scanf("%s", in);
+	gets(in);
 
-	printf("The string '%s' is%s a palindrome (recursive algorithm)\n", in, (PalindromeRecursive(in, strlen(in), 0)) ? "":" not");
-	printf("La cadena '%s' is%s a palindrome (cyclic algorithm)\n", in, (PalindromeCycles(in, strlen(in)) ? "":" not"));
+	printf("The string '%s' is%s a palindrome (recursive algorithm)\n", in, (PalindromeRecursive(in, strlen(in), 0, strlen(in)-1)) ? "":" not");
+	printf("The string '%s' is%s a palindrome (cyclic algorithm)\n", in, (PalindromeCycles(in, strlen(in)) ? "":" not"));
 }
 
 
-int PalindromeRecursive(char string[], int size, int i)
+int PalindromeRecursive(char string[], int size, int i, int j)
 {
-	if(i > size/2)
+	if (string[i] == ' ')
+		i++;
+	if (string[j] == ' ')
+		j--;
+	if(i >= j)
 		return 1;
-	if(string[i] == string[size-(i+1)])
-		return PalindromeRecursive(string, size, i+1);
+	if(string[i] == string[j])
+		return PalindromeRecursive(string, size, i+1, j-1);
 	return 0;
 }
 int PalindromeCycles(char string[], int size)
 {
-	for(int i=0; i < size/2; i++)
-		if(string[i] != string[size-(i+1)])
+	int i = 0;
+	int j = size-1;
+	while(i < j)
+	{
+		while(string[i]==' ')
+			i++;
+		while(string[j]==' ')
+			j--;
+		if(string[i] != string[j])
 			return 0;
+		i++;
+		j--;
+	}
 	return 1;
 }
