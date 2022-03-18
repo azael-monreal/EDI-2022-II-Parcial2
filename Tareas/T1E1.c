@@ -37,9 +37,7 @@ int PalindromeRecursive(char string[], int size, int i, int j)
 }
 int PalindromeCycles(char string[], int size)
 {
-	int i = 0;
-	int j = size-1;
-	while(i < j)
+	for(int i = 0, j = size-1; i < j; i++, j--)
 	{
 		while(string[i]==' ')
 			i++;
@@ -47,8 +45,6 @@ int PalindromeCycles(char string[], int size)
 			j--;
 		if(string[i] != string[j])
 			return 0;
-		i++;
-		j--;
 	}
 	return 1;
 }
