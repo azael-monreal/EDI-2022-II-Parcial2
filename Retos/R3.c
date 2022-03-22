@@ -43,8 +43,23 @@ int main()
 
 char SmallBigLetter(char letters[], int size, char target)
 {
-	for(int i = 0; i < size; i++)
-		if(letters[i] > target)
-			return letters[i];
-	return letters[0];
+	int min = 0, max = size-1;
+
+	while(min <= max)
+	{
+		int guess = (min+max)/2;
+
+		if(letters[guess] == target)
+			return letters[(guess+1)%size];
+
+		else
+		{
+			if(letters[guess] < target)
+				min = ++guess;
+			else
+				max = --guess;
+		}
+	}
+
+	return letters[min%size];
 }
