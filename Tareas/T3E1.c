@@ -24,10 +24,8 @@
 #include <stdio.h>
 #define SIZE 100
 
-void ReadArray(int arr[], int *size, char name[]);
-void Sort(int arr[], int l, int h);
-int Partition(int arr[], int l, int h);
-void Swap(int *a, int *b);
+void ReadArray(int arr[], int* size, char name[]);
+void quickSort(int arr[], int l, int h);
 int CheckRepeats(int arr[], int size);
 
 int main()
@@ -36,11 +34,11 @@ int main()
 
 	ReadArray(nums, &size, "nums");
 
-	Sort(nums, 0, size - 1);
+	quickSort(nums, 0, size - 1);
 	printf("%d", CheckRepeats(nums, size));
 }
 
-void ReadArray(int arr[], int *size, char name[])
+void ReadArray(int arr[], int* size, char name[])
 {
 	printf("%s[] size: ", name);
 	scanf("%d", size);
@@ -51,19 +49,11 @@ void ReadArray(int arr[], int *size, char name[])
 	}
 }
 
-void Sort(int arr[], int l, int h)
+void quickSort(int arr[], int l, int h)
 {
-	if (l < h)
-	{
-		int p = Partition(arr, l, h);
+	if (l >= h)
+		return;
 
-		Sort(arr, l, p - 1);
-		Sort(arr, p + 1, h);
-	}
-}
-
-int Partition(int arr[], int l, int h)
-{
 	int p = arr[h];
 	int i = l - 1;
 
@@ -72,19 +62,19 @@ int Partition(int arr[], int l, int h)
 		if (arr[j] < p)
 		{
 			i++;
-			Swap(&arr[i], &arr[j]);
+			int temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
 		}
 	}
-	Swap(&arr[i + 1], &arr[h]);
+	int temp = arr[i + 1];
+	arr[i + 1] = arr[h];
+	arr[h] = temp;
 
-	return (i + 1);
-}
+	int part = (i + 1);
 
-void Swap(int *a, int *b)
-{
-	int t = *a;
-	*a = *b;
-	*b = t;
+	quickSort(arr, l, part - 1);
+	quickSort(arr, part + 1, h);
 }
 
 int CheckRepeats(int arr[], int size)

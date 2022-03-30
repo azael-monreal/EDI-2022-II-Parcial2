@@ -41,36 +41,34 @@
 #define MN 200
 
 void PrintArray(int arr[], int size, char name[]);
-void ReadArray(int arr[], int *size, char name[]);
+void ReadArray(int arr[], int* size, char name[]);
 
-void Sort(int arr[], int l, int h);
-int Partition(int arr[], int l, int h);
-void Swap(int *a, int *b);
+void quickSort(int arr[], int l, int h);
 
 int main()
 {
-	int numbers1[M], numbers2[N], combined[MN];
+	int numbs1[M], nums2[N], combined[MN];
 	int m, n, mn;
 
-	ReadArray(numbers1, &m, "numbers1");
+	ReadArray(numbs1, &m, "numbers1");
 	for (int i = 0; i < m; i++)
 	{
-		combined[i] = numbers1[i];
+		combined[i] = numbs1[i];
 	}
 
-	PrintArray(numbers1, m, "numbers1");
+	PrintArray(numbs1, m, "numbers1");
 
-	ReadArray(numbers2, &n, "numbers2");
+	ReadArray(nums2, &n, "numbers2");
 	for (int i = 0; i < n; i++)
 	{
-		combined[m + i] = numbers2[i];
+		combined[m + i] = nums2[i];
 	}
 
-	PrintArray(numbers2, n, "numbers2");
+	PrintArray(nums2, n, "numbers2");
 
 	mn = m + n;
 
-	Sort(combined, 0, mn - 1);
+	quickSort(combined, 0, mn - 1);
 
 	PrintArray(combined, mn, "combined");
 }
@@ -84,19 +82,11 @@ void PrintArray(int arr[], int size, char name[])
 	printf("]\n\n");
 }
 
-void Sort(int arr[], int l, int h)
+void quickSort(int arr[], int l, int h)
 {
-	if (l < h)
-	{
-		int p = Partition(arr, l, h);
+	if (l >= h)
+		return;
 
-		Sort(arr, l, p - 1);
-		Sort(arr, p + 1, h);
-	}
-}
-
-int Partition(int arr[], int l, int h)
-{
 	int p = arr[h];
 	int i = l - 1;
 
@@ -105,22 +95,22 @@ int Partition(int arr[], int l, int h)
 		if (arr[j] < p)
 		{
 			i++;
-			Swap(&arr[i], &arr[j]);
+			int temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
 		}
 	}
-	Swap(&arr[i + 1], &arr[h]);
+	int temp = arr[i + 1];
+	arr[i + 1] = arr[h];
+	arr[h] = temp;
 
-	return (i + 1);
+	int part = (i + 1);
+
+	quickSort(arr, l, part - 1);
+	quickSort(arr, part + 1, h);
 }
 
-void Swap(int *a, int *b)
-{
-	int t = *a;
-	*a = *b;
-	*b = t;
-}
-
-void ReadArray(int arr[], int *size, char name[])
+void ReadArray(int arr[], int* size, char name[])
 {
 	printf("%s size: ", name);
 	scanf("%d", size);
