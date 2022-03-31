@@ -31,6 +31,7 @@ typedef struct CQueue CQueue;
 CQueue* createQueue();
 int isEmpty(CQueue* q);
 void enQueue(CQueue* q, int data);
+void deQueue(CQueue* q);
 
 void initiateCQueue(CQueue* q, int n);
 int gameWinner(CQueue* q, int k);
@@ -86,6 +87,13 @@ void enQueue(CQueue* q, int data)
 	q->rear->next = q->front;
 }
 
+void deQueue(CQueue* q)
+{
+	QNode* temp = q->front;
+	q->front = q->rear->next = q->front->next;
+	free(temp);
+}
+
 void initiateCQueue(CQueue* q, int n)
 {
 	for (int i = 0; i < n; i++)
@@ -97,18 +105,15 @@ int gameWinner(CQueue* q, int k)
 	if (isEmpty(q))
 		return 0;
 
-	QNode* node = q->front;
-
-	while (node != node->next)
+	while (q->front != q->rear)
 	{
-		for (int i = 0; i < k - 2; i++)
-			node = node->next;
-		QNode* temp = node->next;
-
-		node->next = temp->next;
-		free(temp);
-		node = node->next;
+		for (int i = 0; i < k - 1; i++)
+		{
+			q->front = q->front->next;
+			q->rear = q->rear->next;
+		}
+		deQueue(q);
 	}
 
-	return node->data;
+	return q->front->data;
 }
