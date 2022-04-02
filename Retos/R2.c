@@ -1,29 +1,43 @@
 /*
  * Conversión decimal a hexadecimal
  *
- *  Dado un número decimal construya una función que convierta dicho número en una cadena que represente el valor del número en hexadecimal (base 16).
+ *  Dado un número decimal construya una función que convierta dicho número en
+ * una cadena que represente el valor del número en hexadecimal (base 16).
  */
 
 #include <stdio.h>
+#include <string.h>
 
-void ConvertHex(int dec);
+char* convertHex(int dec, int p, char* h);
 
 int main()
 {
-	int num;
-	printf("Number to convert: ");
-	scanf("%d", &num);
+	unsigned int num;
+	char hex[8] = "";
 
-	printf("%d(DEC) = ", num);
-	ConvertHex(num);
-	printf("(HEX)");
+	printf("Number to convert: ");
+	scanf("%u", &num);
+
+	strcpy(hex, convertHex(num, 0, hex));
+
+	printf("%u(DEC) = ", num);
+	printf("%s(HEX)", hex);
 }
 
-void ConvertHex(int dec)
+char* convertHex(int dec, int p, char* h)
 {
-	if(dec>0)
+	if (dec > 0)
 	{
-		ConvertHex(dec/16);
-		printf("%c", (dec%16)+((dec%16<10)?48:55));
+		h[p] = ((dec % 16) + ((dec % 16 < 10) ? 48 : 55));
+		convertHex(dec / 16, ++p, h);
 	}
+
+	for (int i = 0, j = strlen(h) - 1; i < j; i++, j--)
+	{
+		char temp = h[i];
+		h[i] = h[j];
+		h[j] = temp;
+	}
+
+	return h;
 }
