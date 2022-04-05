@@ -35,6 +35,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #define M 100
 #define N 100
@@ -43,32 +44,22 @@
 void PrintArray(int arr[], int size, char name[]);
 void ReadArray(int arr[], int* size, char name[]);
 
-void quickSort(int arr[], int l, int h);
+void merge(int a[], int s1, int b[], int s2, int out[]);
 
 int main()
 {
-	int numbs1[M], nums2[N], combined[MN];
+	int nums1[M], nums2[N], combined[MN];
 	int m, n, mn;
 
-	ReadArray(numbs1, &m, "numbers1");
-	for (int i = 0; i < m; i++)
-	{
-		combined[i] = numbs1[i];
-	}
-
-	PrintArray(numbs1, m, "numbers1");
+	ReadArray(nums1, &m, "numbers1");
+	PrintArray(nums1, m, "numbers1");
 
 	ReadArray(nums2, &n, "numbers2");
-	for (int i = 0; i < n; i++)
-	{
-		combined[m + i] = nums2[i];
-	}
-
 	PrintArray(nums2, n, "numbers2");
 
 	mn = m + n;
 
-	quickSort(combined, 0, mn - 1);
+	merge(nums1, m, nums2, n, combined);
 
 	PrintArray(combined, mn, "combined");
 }
@@ -82,34 +73,6 @@ void PrintArray(int arr[], int size, char name[])
 	printf("]\n\n");
 }
 
-void quickSort(int arr[], int l, int h)
-{
-	if (l >= h)
-		return;
-
-	int p = arr[h];
-	int i = l - 1;
-
-	for (int j = l; j <= h - 1; j++)
-	{
-		if (arr[j] < p)
-		{
-			i++;
-			int temp = arr[i];
-			arr[i] = arr[j];
-			arr[j] = temp;
-		}
-	}
-	int temp = arr[i + 1];
-	arr[i + 1] = arr[h];
-	arr[h] = temp;
-
-	int part = (i + 1);
-
-	quickSort(arr, l, part - 1);
-	quickSort(arr, part + 1, h);
-}
-
 void ReadArray(int arr[], int* size, char name[])
 {
 	printf("%s size: ", name);
@@ -119,4 +82,28 @@ void ReadArray(int arr[], int* size, char name[])
 		printf("%s[%d]: ", name, i);
 		scanf("%d", &arr[i]);
 	}
+}
+
+void merge(int a[], int s1, int b[], int s2, int out[])
+{
+	int i, j, k;
+
+	for (i = j = k = 0; i < s1 && j < s2; k++)
+	{
+		if (a[i] <= b[j])
+		{
+			out[k] = a[i];
+			i++;
+		}
+		else
+		{
+			out[k] = b[j];
+			j++;
+		}
+	}
+
+	for (; i < s1; i++, k++)
+		out[k] = a[i];
+	for (; j < s2; j++, k++)
+		out[k] = b[j];
 }
