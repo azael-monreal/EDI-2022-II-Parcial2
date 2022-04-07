@@ -40,19 +40,16 @@ int main()
 
 void inputDate(Date* d)
 {
-	char m[SSIZE];
+	/* char m[SSIZE]; */
 
 	printf("day: ");
 	scanf("%u", &d->day);
 
 	printf("month: ");
-	scanf("%s", m);
-	m[0] = toupper(m[0]);
-	for (int i = 1; i < strlen(m); ++i)
-	{
-		m[i] = tolower(m[i]);
-	}
-	strcpy(d->month, m);
+	scanf("%s", &d->month);
+	d->month[0] = toupper(d->month[0]);
+	for (int i = 1; i < strlen(d->month); ++i)
+		d->month[i] = tolower(d->month[i]);
 
 	printf("year: ");
 	scanf("%u", &d->year);
